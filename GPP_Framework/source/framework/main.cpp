@@ -10,7 +10,7 @@
 
 //---------- Registered Applications -----------
 #ifdef KungFuCircle
-
+#include "../projects/App_KungFuCircle/App_KungFuCircle.h"
 #endif // KungFuCircle
 
 
@@ -65,7 +65,7 @@ int main(int argc, char* argv[])
 		//Application Creation
 		IApp* myApp = nullptr;
 #ifdef KungFuCircle
-		myApp;
+		myApp = new App_KungFuCircle(); 
 #endif // KungFuCircle
 
 
