@@ -4,6 +4,7 @@
 #include <vector>
 class Creature;
 class Player; 
+class StageManager;
 class App_KungFuCircle :public IApp
 {
 public: 
@@ -18,7 +19,8 @@ public:
 private: 
 	std::vector<Creature*> m_pEnemyCreatures; 
 	Player* m_pPlayer;
-	KungFuGrid m_KungFuGrid;
+	KungFuGrid* m_KungFuGrid;
+	StageManager* m_pStageManager;
 	float AttackRange = 5; 
 	void IMGUIUpdate();
 };

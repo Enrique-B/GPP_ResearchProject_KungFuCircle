@@ -205,6 +205,7 @@
     </ClCompile>
     <Link>
       <AdditionalDependencies>Box2D32d.lib;SDL2main.lib;SDL2.lib;winmm.lib;version.lib;opengl32.lib;vld.lib;IMGUI_LIB32d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <GenerateDebugInformation>DebugFull</GenerateDebugInformation>
     </Link>
     <PostBuildEvent>
       <Command>xcopy "$(SolutionDir)..\lib\SDL2.dll" "$(OutDir)" /y /D</Command>
@@ -331,6 +332,7 @@
     <ClCompile Include="projects\App_Steering\SteeringBehaviors.cpp" />
     <ClCompile Include="projects\Shared\BaseAgent.cpp" />
     <ClCompile Include="projects\Shared\NavigationColliderElement.cpp" />
+    <ClCompile Include="projects\App_KungFuCircle\StageManager.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug_Exam|Win32'">Create</PrecompiledHeader>
@@ -339,6 +341,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="projects\App_KungFuCircle\CreatureStates.h" />
     <ClInclude Include="projects\App_KungFuCircle\KungFuGrid.h" />
     <ClInclude Include="projects\App_KungFuCircle\Player.h" />
     <ClInclude Include="projects\App_KungFuCircle\Creature.h" />
@@ -421,6 +424,7 @@
     <ClInclude Include="projects\App_Steering\SteeringHelpers.h" />
     <ClInclude Include="projects\Shared\BaseAgent.h" />
     <ClInclude Include="projects\Shared\NavigationColliderElement.h" />
+    <ClInclude Include="projects\App_KungFuCircle\StageManager.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <ItemGroup>

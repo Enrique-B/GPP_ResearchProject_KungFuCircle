@@ -38,6 +38,7 @@
     <ClCompile Include="projects\Shared\BaseAgent.cpp" />
     <ClCompile Include="projects\App_KungFuCircle\Player.cpp" />
     <ClCompile Include="projects\App_KungFuCircle\KungFuGrid.cpp" />
+    <ClCompile Include="projects\App_KungFuCircle\StageManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="projects\App_Selector.h" />
@@ -123,6 +124,8 @@
     <ClInclude Include="projects\Shared\BaseAgent.h" />
     <ClInclude Include="projects\App_KungFuCircle\Player.h" />
     <ClInclude Include="projects\App_KungFuCircle\KungFuGrid.h" />
+    <ClInclude Include="projects\App_KungFuCircle\CreatureStates.h" />
+    <ClInclude Include="projects\App_KungFuCircle\StageManager.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="imgui.ini" />

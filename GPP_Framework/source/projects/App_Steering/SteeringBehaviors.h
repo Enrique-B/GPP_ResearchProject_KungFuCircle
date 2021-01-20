@@ -80,6 +80,7 @@ public:
 
 	//Wander Behavior
 	SteeringOutput CalculateSteering(float deltaT, SteeringAgent* pAgent) override;
+	void SetFleeRadius(float radius) { m_fleeRadius = radius; }
 private: 
 	float m_fleeRadius{15.f};
 };

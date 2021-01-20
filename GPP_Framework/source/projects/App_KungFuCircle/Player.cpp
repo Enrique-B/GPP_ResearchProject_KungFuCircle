@@ -4,6 +4,7 @@
 Player::Player()
 	:BaseAgent()
 {
+	SetMass(500);
 }
 
 void Player::Update(float dt)
