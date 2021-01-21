@@ -35,7 +35,7 @@ public:
 	void AddStageManager(StageManager* stageManager);
 
 	void SetToWander();
-	void SetToSeek(const Elite::Vector2& position); 
+	void SetToArrive(const Elite::Vector2& position); 
 	void SetToFlee(const Elite::Vector2& position);
 private: 
 	int m_GridWeight; 
@@ -44,7 +44,11 @@ private:
 	std::vector<Elite::FSMState*> m_pStates;
 	std::vector<Elite::FSMTransition*> m_pTransitions;
 
-	Seek* m_pSeek; 
+	Arrive* m_pArrive; 
 	Wander* m_pWander;
 	Flee* m_pFlee;
+
+	void SetAttacks();
+	void SetStateMachine();
+
 };

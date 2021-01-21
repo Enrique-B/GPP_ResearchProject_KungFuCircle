@@ -21,31 +21,34 @@ void App_KungFuCircle::Start()
 	m_pStageManager = new StageManager{};
 	m_KungFuGrid->SetApproachCircleRadius(6); 
 	m_KungFuGrid->SetAttackCircleRadius(3);
-	m_KungFuGrid->SetGridCapacity(10);
+	m_KungFuGrid->SetGridCapacity(20);
+	m_KungFuGrid->SetAttackCapacity(8);
 	m_pPlayer = new Player{};
 
 	m_pStageManager->SetPlayerKungFuGrid(m_KungFuGrid);
-	int amountOfCreatures{1};
+	int amountOfCreatures{4};
 	m_pEnemyCreatures.reserve(amountOfCreatures);
 
 	for (int i = 0; i < amountOfCreatures; i++)
 	{
 		m_pEnemyCreatures.push_back(new Creature{});
 		m_pEnemyCreatures[i]->AddStageManager(m_pStageManager);
-		float radius = m_KungFuGrid->GetWaitingCircleRadius();
-		m_pEnemyCreatures[i]->SetPosition({ Elite::randomFloat(-radius,radius), Elite::randomFloat(-radius,radius) });
+		float radius = m_KungFuGrid->GetWaitingCircleRadius() -1;
+		const float angle = Elite::randomFloat(0, float(2 * M_PI));
+
+		m_pEnemyCreatures[i]->SetPosition({ cos(angle) * radius, sin(angle) * radius });
 	}
 }
 
 void App_KungFuCircle::Update(float deltaTime)
 {
+	IMGUIUpdate();
+	m_KungFuGrid->Update(deltaTime, m_pPlayer->GetPosition());
 	m_pPlayer->Update(deltaTime);
 	for (Creature* pCreature : m_pEnemyCreatures)
 	{
 		pCreature->Update(deltaTime);
 	}
-	IMGUIUpdate();
-	m_KungFuGrid->Update(deltaTime, m_pPlayer->GetPosition());
 
 }
 
@@ -101,14 +104,18 @@ void App_KungFuCircle::IMGUIUpdate()
 	float approachRadius = m_KungFuGrid->GetApproachCircleRadius();
 	float attackRadius = m_KungFuGrid->GetAttackCircleRadius();
 	int gridCapacity = m_KungFuGrid->GetGridCapacity();
+	int attackCapacity = m_KungFuGrid->GetAttackCapacity();
 
 	ImGui::SliderFloat("approachRadius", &approachRadius, 0, 40, "%5");
 	ImGui::SliderFloat("attackRadius", &attackRadius, 0, 40, "%5");
 	ImGui::SliderInt("gridCapacity", &gridCapacity, 2, 20, "%1");
+	ImGui::SliderInt("attackCapacity", &attackCapacity, 2, 20, "%2");
+
 
 	m_KungFuGrid->SetApproachCircleRadius(approachRadius);
 	m_KungFuGrid->SetAttackCircleRadius(attackRadius);
 	m_KungFuGrid->SetGridCapacity(gridCapacity);
+	m_KungFuGrid->SetAttackCapacity(attackCapacity);
 	ImGui::PopAllowKeyboardFocus();
 	ImGui::End();
 }

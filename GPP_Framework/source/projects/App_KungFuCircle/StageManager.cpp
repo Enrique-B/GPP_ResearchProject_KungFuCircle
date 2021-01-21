@@ -18,11 +18,14 @@ void StageManager::SetPlayerKungFuGrid(KungFuGrid* pGrid)
 	m_pPlayerKungFuGrid = pGrid;
 }
 
-bool StageManager::RequestAccesToApproachCircle(Creature* pCreature, int nodeIndex)
+bool StageManager::RequestAccesToApproachCircle(Creature* pCreature, int& nodeIndex)
 {
 	// looking if it's in the waiting circle before allowing it in the approachCircle
-	const float squaredDistance = Elite::DistanceSquared(pCreature->GetPosition(), m_pPlayerKungFuGrid->GetMiddlePos());
-	if (Elite::Square(m_pPlayerKungFuGrid->GetWaitingCircleRadius()) < squaredDistance)
+	const float distanceSquared{ Elite::DistanceSquared(pCreature->GetPosition(), m_pPlayerKungFuGrid->GetMiddlePos()) };
+	const float squaredWaitingCircle{ Elite::Square(m_pPlayerKungFuGrid->GetWaitingCircleRadius()) };
+	const float squareApproachCircle{ Elite::Square(m_pPlayerKungFuGrid->GetApproachCircleRadius()) };
+	if (distanceSquared > squaredWaitingCircle 
+		|| distanceSquared < squareApproachCircle)
 	{
 		return false;
 	}
@@ -35,6 +38,7 @@ bool StageManager::RequestAccesToApproachCircle(Creature* pCreature, int nodeInd
 	{
 		return false;
 	}
+	m_CurrentGridCapacity += pCreature->GetGridWeight();
 	return true;
 }
 
@@ -60,10 +64,9 @@ bool StageManager::RequestAttack(Creature* pCreature, Attack& attack)
 		return false;
 	}
 	// if there are possible attacks to be done we do a random 
-	attack = possibleAttacks[Elite::randomInt(possibleAttacks.size() - 1)];
+	attack = possibleAttacks[Elite::randomInt(possibleAttacks.size())];
 	m_CurrentAttackCapicty += attack.AttackWeight;
 	m_pCreaturesOnGrid[pCreature] = attack;
-
 	return true;
 }
 
@@ -74,7 +77,8 @@ bool StageManager::GetPositionFromNodeIndex(int nodeIndex, Elite::Vector2& posit
 
 bool StageManager::IsPositionInOuterCircle(const Elite::Vector2& position)
 {
-	return Elite::DistanceSquared(m_pPlayerKungFuGrid->GetMiddlePos(), position) > Elite::Square(m_pPlayerKungFuGrid->GetApproachCircleRadius());
+	return Elite::DistanceSquared(m_pPlayerKungFuGrid->GetMiddlePos(), position) 
+		< Elite::Square(m_pPlayerKungFuGrid->GetApproachCircleRadius());
 }
 
 void StageManager::RemoveCreatureFromGrid(Creature* pCreature)

@@ -1,5 +1,4 @@
 #pragma once
-
 #include "framework/EliteAI/EliteDecisionMaking/EliteFiniteStateMachine/EFiniteStateMachine.h"
 #include "framework/EliteAI/EliteData/EBlackboard.h"
 #include "StageManager.h"
@@ -19,7 +18,7 @@ public:
 	virtual void Update(Elite::Blackboard* pBlackboard, float deltaTime) 
 	{
 		Elite::Vector2 playerPos = pStageManager->GetMiddlePoint();
-		pCurrentCreature->SetToSeek(playerPos);
+		pCurrentCreature->SetToArrive(playerPos);
 	}
 	virtual void OnExit(Elite::Blackboard* pBlackboard)
 	{
@@ -54,7 +53,7 @@ class GoToApproachCircle : public Elite::FSMState
 		Elite::Vector2 position{};
 		if (pStageManager->GetPositionFromNodeIndex(index, position))
 		{
-			pCurrentCreature->SetToSeek(position);
+			pCurrentCreature->SetToArrive(position);
 		}
 	}
 private: 
@@ -78,16 +77,36 @@ public:
 	{
 		const Elite::Vector2 playerPos = pStageManager->GetMiddlePoint();
 		pCurrentCreature->SetToFlee(playerPos);
+
 	}
 private:
 	StageManager* pStageManager = nullptr;
 	Creature* pCurrentCreature = nullptr;
 };
 
+class WanderState : public Elite::FSMState
+{
+public:
+	virtual void OnEnter(Elite::Blackboard* pBlackboard)
+	{
+		if (pCreature == nullptr)
+		{
+			pBlackboard->GetData("Creature", pCreature);
+		}
+	}
+	virtual void OnExit(Elite::Blackboard* pBlackboard) {}
+	virtual void Update(Elite::Blackboard* pBlackboard, float deltaTime)
+	{
+		pCreature->SetToWander();
+	}
+private:
+	Creature* pCreature{ nullptr };
+};
+
 class Idle : public Elite::FSMState
 {
 public:
-	virtual void OnEnter(Elite::Blackboard* pBlackboard) 
+	virtual void OnEnter(Elite::Blackboard* pBlackboard)  
 	{
 		if (pCreature == nullptr)
 		{
@@ -97,7 +116,7 @@ public:
 	virtual void OnExit(Elite::Blackboard* pBlackboard) {}
 	virtual void Update(Elite::Blackboard* pBlackboard, float deltaTime) 
 	{
-		pCreature->SetToWander();
+		pCreature->SetToArrive(pCreature->GetPosition());
 	}
 private: 
 	Creature* pCreature{ nullptr };
@@ -119,7 +138,7 @@ public:
 			return false;
 		}
 		const Elite::Vector2 playerPos = pStageManager->GetMiddlePoint();
-		const float minDistanceToLeave = Elite::Square(3.0f);
+		const float minDistanceToLeave = Elite::Square(2.f);
 		if (Elite::DistanceSquared(playerPos, pCreature->GetPosition()) < minDistanceToLeave)
 		{
 			return true;
@@ -193,8 +212,7 @@ public:
 		{
 			return false;
 		}
-		bool isInOuterCircle = pStageManager->IsPositionInOuterCircle(pCreature->GetPosition());
-		return isInOuterCircle;
+		return !pStageManager->IsPositionInOuterCircle(pCreature->GetPosition());
 	}
 };
 #pragma endregion Transitions

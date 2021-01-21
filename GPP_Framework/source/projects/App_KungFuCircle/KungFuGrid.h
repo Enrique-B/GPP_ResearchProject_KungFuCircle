@@ -9,7 +9,6 @@ struct Node
 }; 
 
 class Creature; 
-
 class KungFuGrid
 {
 public: 

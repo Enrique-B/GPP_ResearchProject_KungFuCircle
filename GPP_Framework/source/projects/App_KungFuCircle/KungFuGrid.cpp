@@ -5,6 +5,11 @@
 KungFuGrid::KungFuGrid()
 	:m_MiddlePos{}
 {
+	for (size_t i = 0; i < 8; i++)
+	{
+		m_Nodes.push_back(Node(i));
+	}
+
 	SetAttackCircleRadius(10);
 	SetApproachCircleRadius(20);
 	SetGridCapacity(4);
@@ -13,23 +18,6 @@ KungFuGrid::KungFuGrid()
 
 void KungFuGrid::SetGridCapacity(int capacity)
 {
-	int difference{capacity - m_GridCapacity };
-	if (difference == 0)
-	{
-		return;
-	}
-	if (difference < 0) // smaller 
-	{
-		difference = abs(difference);
-		m_Nodes.erase(m_Nodes.begin(), m_Nodes.begin() + difference);
-	}
-	else // bigger 
-	{
-		for (int i = 0; i < difference; i++)
-		{
-			m_Nodes.push_back(Node(m_Nodes.size()));
-		}
-	}
 	m_GridCapacity = capacity;
 	UpdateNodePositions();
 }
@@ -49,11 +37,19 @@ void KungFuGrid::Render(float deltaTime) const
 	DEBUGRENDERER2D->DrawCircle(m_MiddlePos, m_ApproachCircleRadius, approachRadiusColor, 0);
 	DEBUGRENDERER2D->DrawCircle(m_MiddlePos, m_WaitingCircleRadius, waitingRadiusColor, 0);
 
-	const float anglePerNode = 2 * float(M_PI) / float(m_GridCapacity);
-	const float angleOffset = anglePerNode / 2.f;
 	const int size = m_Nodes.size();
+	const float anglePerNode = 2 * float(M_PI) / float(size);
+	const float angleOffset = anglePerNode / 2.f;
 	for (int i = 0; i < size; i++)
 	{
+		if (m_Nodes[i].isOccupied)
+		{
+			DEBUGRENDERER2D->DrawPoint(m_Nodes[i].pos, 3, Elite::Color{ 1,0,0,1 }, 0);
+		}
+		else
+		{
+			DEBUGRENDERER2D->DrawPoint(m_Nodes[i].pos, 3, Elite::Color{ 0,0,0,1 }, 0);
+		}
 		DEBUGRENDERER2D->DrawPoint(m_Nodes[i].pos, 3, Elite::Color{ 0,0,0,1 }, 0);
 		Elite::Vector2 secondPos{};
 		secondPos.x = m_MiddlePos.x + m_ApproachCircleRadius * cosf(i * anglePerNode + angleOffset);
@@ -91,13 +87,14 @@ bool KungFuGrid::GetClosestNode(const Elite::Vector2& enemyPos, int& nodeIndex)
 		}
 	}
 	m_Nodes[closestNode.index].isOccupied = true;
+	std::cout << "Node " << closestNode.index << " is occupied \n";
 	nodeIndex = closestNode.index;
 	return true;
 }
 
 bool KungFuGrid::GetPositionFromNodeIndex(int nodeIndex, Elite::Vector2& position)
 {
-	if (nodeIndex >= m_GridCapacity)
+	if (nodeIndex >= m_Nodes.size())
 	{
 		return false;
 	}
@@ -111,16 +108,17 @@ void KungFuGrid::SetNodeUnoccupied(int nodeIndex)
 	{
 		return;
 	}
+	std::cout << "Node " << nodeIndex << " is not occupied anymore\n";
 	m_Nodes[nodeIndex].isOccupied = false;
 }
 
 void KungFuGrid::UpdateNodePositions()
 {
-	const float anglePerNode = 2 * float(M_PI) / float(m_GridCapacity);
+	const int size = m_Nodes.size();
+	const float anglePerNode = 2 * float(M_PI) / float(size);
 	// the approachCircleRadius should always be bigger then the circleRadius
 	const float differenceBetweenRadiuses = m_ApproachCircleRadius - m_AttackCircleRadius;
 	const float radius = m_AttackCircleRadius + (differenceBetweenRadiuses / 2.f);
-	const int size = m_Nodes.size();
 	for (int i = 0; i < size; i++)
 	{
 		m_Nodes[i].pos.x = m_MiddlePos.x + radius * cosf(i * anglePerNode);

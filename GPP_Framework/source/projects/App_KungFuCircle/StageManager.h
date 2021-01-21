@@ -8,7 +8,7 @@ public:
 	StageManager(); 
 	~StageManager();
 	void SetPlayerKungFuGrid(KungFuGrid* pGrid);
-	bool RequestAccesToApproachCircle(Creature* pCreature, int nodeIndex);
+	bool RequestAccesToApproachCircle(Creature* pCreature, int& nodeIndex);
 	bool RequestAttack(Creature* pCreature, Attack& attack);
 	bool GetPositionFromNodeIndex(int nodeIndex, Elite::Vector2& position);
 	bool IsPositionInOuterCircle(const Elite::Vector2& position);
@@ -19,5 +19,7 @@ private:
 	int m_CurrentGridCapacity;
 	int m_CurrentAttackCapicty;
 	std::unordered_map<Creature*, Attack> m_pCreaturesOnGrid;
+
+
 };
 
