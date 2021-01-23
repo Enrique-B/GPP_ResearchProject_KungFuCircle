@@ -10,6 +10,7 @@ StageManager::StageManager()
 {
 }
 
+
 StageManager::~StageManager()
 {
 }
