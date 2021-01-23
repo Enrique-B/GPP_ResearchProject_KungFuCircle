@@ -1,5 +1,5 @@
 # KungFuCircle
-![Project Image](project-image-url)
+![Project Image](https://github.com/Enrique-B/GPP_ResearchProject_KungFuCircle/blob/master/PicturesForReadMe/KungFuCircle.gif)
 
 ---
 ### Table of Contents
@@ -16,7 +16,7 @@ do you feel that you have no control over this and are thinking how games like P
 The Kung Fu Circle works like in the typical kung fu movies where enemies are standing around the main character and attacking one by one.
 
 ## How It Works
-![HowItWorksImage](project-image-url)
+![HowItWorksImage](https://github.com/Enrique-B/GPP_ResearchProject_KungFuCircle/blob/master/PicturesForReadMe/KungFuCircle.png)
 
 The player has a circular grid around him that's world space aligned and has 8 nodes.
 The grid has a grid capacity (amount of enemies that can attack at once) and an attack capacity (limits the amount of attacks from the enemies and types of attacks)
@@ -43,7 +43,7 @@ I personally made some changes to the BlendedSteeringbehavior so I could change 
 The system isn't perfect and it's not idiot proof but it does it's job
 
 ## Implementation
-![FiniteStateMachine](project-image-url)
+![FiniteStateMachine](https://github.com/Enrique-B/GPP_ResearchProject_KungFuCircle/blob/master/PicturesForReadMe/KungFuCircle%20StateMachine.png)
 
 In my implementation I made a finite state machine state machine to control the enemies their behavior and in the blackboard I put something they called the Stage Manager.
 The stage manager has the player's grid and decides if an enemy goes into the approach circle and if he can attack and chooses what attack the enemy will use it's kind of a commander in an army. 
