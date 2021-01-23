@@ -21,8 +21,6 @@
     <ClCompile Include="projects\App_Steering\SteeringAgent.cpp" />
     <ClCompile Include="projects\App_Steering\SteeringBehaviors.cpp" />
     <ClCompile Include="projects\App_Steering\CombinedBehaviors\CombinedSteeringBehaviors.cpp" />
-    <ClCompile Include="projects\App_Steering\CombinedBehaviors\FlockingSteeringBehaviors.cpp" />
-    <ClCompile Include="projects\App_Steering\CombinedBehaviors\TheFlock.cpp" />
     <ClCompile Include="projects\App_Steering\CombinedBehaviors\SpacePartitioning.cpp" />
     <ClCompile Include="framework\EliteAI\EliteGraphs\EGraphConnectionTypes.cpp" />
     <ClCompile Include="framework\EliteAI\EliteGraphs\EGraphNodeTypes.cpp" />
@@ -93,9 +91,7 @@
     <ClInclude Include="projects\App_Steering\SteeringAgent.h" />
     <ClInclude Include="projects\App_Steering\SteeringBehaviors.h" />
     <ClInclude Include="projects\App_Steering\SteeringHelpers.h" />
-    <ClInclude Include="projects\App_Steering\CombinedBehaviors\TheFlock.h" />
     <ClInclude Include="projects\App_Steering\CombinedBehaviors\CombinedSteeringBehaviors.h" />
-    <ClInclude Include="projects\App_Steering\CombinedBehaviors\FlockingSteeringBehaviors.h" />
     <ClInclude Include="projects\App_Steering\CombinedBehaviors\SpacePartitioning.h" />
     <ClInclude Include="framework\EliteAI\EliteGraphs\EliteGraphAlgorithms\EEularianPath.h" />
     <ClInclude Include="framework\EliteAI\EliteGraphs\EGraph2D.h" />

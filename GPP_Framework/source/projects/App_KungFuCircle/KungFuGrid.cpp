@@ -19,7 +19,6 @@ KungFuGrid::KungFuGrid()
 void KungFuGrid::SetGridCapacity(int capacity)
 {
 	m_GridCapacity = capacity;
-	UpdateNodePositions();
 }
 void KungFuGrid::Update(float deltaTime, const Elite::Vector2& middlePos)
 {
@@ -87,14 +86,13 @@ bool KungFuGrid::GetClosestNode(const Elite::Vector2& enemyPos, int& nodeIndex)
 		}
 	}
 	m_Nodes[closestNode.index].isOccupied = true;
-	std::cout << "Node " << closestNode.index << " is occupied \n";
 	nodeIndex = closestNode.index;
 	return true;
 }
 
 bool KungFuGrid::GetPositionFromNodeIndex(int nodeIndex, Elite::Vector2& position)
 {
-	if (nodeIndex >= m_Nodes.size())
+	if (nodeIndex >= int(m_Nodes.size()))
 	{
 		return false;
 	}
@@ -108,7 +106,6 @@ void KungFuGrid::SetNodeUnoccupied(int nodeIndex)
 	{
 		return;
 	}
-	std::cout << "Node " << nodeIndex << " is not occupied anymore\n";
 	m_Nodes[nodeIndex].isOccupied = false;
 }
 

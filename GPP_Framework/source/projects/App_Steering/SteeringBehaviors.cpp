@@ -44,7 +44,7 @@ SteeringOutput Flee::CalculateSteering(float deltaT, SteeringAgent* pAgent)
 {
 	auto distanceToTarget = DistanceSquared(pAgent->GetPosition(), m_Target.Position); 
 	SteeringOutput output;
-	if (distanceToTarget > (m_fleeRadius * m_fleeRadius))
+	if (distanceToTarget > (m_FleeRadius * m_FleeRadius))
 	{
 		output.IsValid = false; 
 		return output; 
@@ -116,21 +116,26 @@ SteeringOutput Evade::CalculateSteering(float deltaT, SteeringAgent* pAgent)
 	
 	// the t is the time to calculate in the future 
 	const float t = Distance(m_Target.Position, pAgent->GetPosition());
-	if (t > m_EvadeRadius)
+	if (t > m_FleeRadius)
 	{
 		output.IsValid = false;
 		return output;
 	}
 	// future position of the target
 	// deviding the t with the max linear speed is so the distance is lowered, this is better if the 2 speeds are opposites of each other
-	const Elite::Vector2 futurePos{ m_Target.Position + m_Target.LinearVelocity * t / pAgent->GetMaxLinearSpeed() };
+	const Elite::Vector2 futurePos{ m_Target.Position + m_Target.LinearVelocity * t };
 	m_Target = TargetData(futurePos);
 	if (pAgent->CanRenderBehavior())
 	{
 		// future position
 		DEBUGRENDERER2D->DrawPoint(futurePos, 10, Elite::Color{ 0,1,0 });
 		// evade radius 
-		DEBUGRENDERER2D->DrawCircle(pAgent->GetPosition(), m_EvadeRadius, Elite::Color{ 1,1,1 }, 0);
+		DEBUGRENDERER2D->DrawCircle(pAgent->GetPosition(), m_FleeRadius, Elite::Color{ 1,1,1 }, 0);
 	}
 	return Flee::CalculateSteering(deltaT, pAgent);
+}
+
+SteeringOutput Stand::CalculateSteering(float deltaT, SteeringAgent* pAgent)
+{
+	return SteeringOutput(-Elite::GetNormalized(pAgent->GetLinearVelocity()) * pAgent->GetMaxLinearSpeed());
 }

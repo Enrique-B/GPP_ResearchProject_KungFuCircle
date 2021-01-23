@@ -19,14 +19,14 @@ void App_KungFuCircle::Start()
 {
 	m_KungFuGrid = new KungFuGrid{};
 	m_pStageManager = new StageManager{};
-	m_KungFuGrid->SetApproachCircleRadius(6); 
-	m_KungFuGrid->SetAttackCircleRadius(3);
-	m_KungFuGrid->SetGridCapacity(20);
+	m_KungFuGrid->SetApproachCircleRadius(16); 
+	m_KungFuGrid->SetAttackCircleRadius(8);
+	m_KungFuGrid->SetGridCapacity(8);
 	m_KungFuGrid->SetAttackCapacity(8);
 	m_pPlayer = new Player{};
 
 	m_pStageManager->SetPlayerKungFuGrid(m_KungFuGrid);
-	int amountOfCreatures{4};
+	const int amountOfCreatures{16};
 	m_pEnemyCreatures.reserve(amountOfCreatures);
 
 	for (int i = 0; i < amountOfCreatures; i++)
@@ -35,7 +35,6 @@ void App_KungFuCircle::Start()
 		m_pEnemyCreatures[i]->AddStageManager(m_pStageManager);
 		float radius = m_KungFuGrid->GetWaitingCircleRadius() -1;
 		const float angle = Elite::randomFloat(0, float(2 * M_PI));
-
 		m_pEnemyCreatures[i]->SetPosition({ cos(angle) * radius, sin(angle) * radius });
 	}
 }
@@ -43,13 +42,13 @@ void App_KungFuCircle::Start()
 void App_KungFuCircle::Update(float deltaTime)
 {
 	IMGUIUpdate();
+	m_pStageManager->Update(m_pEnemyCreatures, deltaTime);
 	m_KungFuGrid->Update(deltaTime, m_pPlayer->GetPosition());
 	m_pPlayer->Update(deltaTime);
 	for (Creature* pCreature : m_pEnemyCreatures)
 	{
 		pCreature->Update(deltaTime);
 	}
-
 }
 
 void App_KungFuCircle::Render(float deltaTime) const
@@ -108,7 +107,7 @@ void App_KungFuCircle::IMGUIUpdate()
 
 	ImGui::SliderFloat("approachRadius", &approachRadius, 0, 40, "%5");
 	ImGui::SliderFloat("attackRadius", &attackRadius, 0, 40, "%5");
-	ImGui::SliderInt("gridCapacity", &gridCapacity, 2, 20, "%1");
+	ImGui::SliderInt("gridCapacity", &gridCapacity, 4, 28, "%4");
 	ImGui::SliderInt("attackCapacity", &attackCapacity, 2, 20, "%2");
 
 
@@ -116,6 +115,10 @@ void App_KungFuCircle::IMGUIUpdate()
 	m_KungFuGrid->SetAttackCircleRadius(attackRadius);
 	m_KungFuGrid->SetGridCapacity(gridCapacity);
 	m_KungFuGrid->SetAttackCapacity(attackCapacity);
+	for (Creature* pCreature : m_pEnemyCreatures)
+	{
+		pCreature->GetFlee()->SetFleeRadius(approachRadius);
+	}
 	ImGui::PopAllowKeyboardFocus();
 	ImGui::End();
 }

@@ -15,7 +15,7 @@ public:
 	KungFuGrid();
 	//getters and setters
 	void SetAttackCircleRadius(float radius) { m_AttackCircleRadius = radius; };
-	void SetApproachCircleRadius(float radius) {m_ApproachCircleRadius = radius; m_WaitingCircleRadius = radius + 5;}
+	void SetApproachCircleRadius(float radius) {m_ApproachCircleRadius = radius; m_WaitingCircleRadius = radius + 10;}
 	void SetGridCapacity(int Capacity);
 	void SetAttackCapacity(int Capacity) { m_AttackCapacity = Capacity; }
 	float GetApproachCircleRadius() const { return m_ApproachCircleRadius; }

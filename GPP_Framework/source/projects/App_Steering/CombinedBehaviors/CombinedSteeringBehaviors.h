@@ -2,34 +2,40 @@
 #include "../SteeringBehaviors.h"
 
 class Flock;
+enum class SteeringBehavior
+{
+	None, Seek, Wander, Flee, Arrive, Face, Persuit, Evade, Stand
+};
 
 //****************
 //BLENDED STEERING
-class BlendedSteering final: public ISteeringBehavior
+class BlendedSteering final : public ISteeringBehavior
 {
+public:
 	struct WeightedBehavior
 	{
 		ISteeringBehavior* pBehavior = nullptr;
 		float weight = 0.f;
+		SteeringBehavior eBehavior = SteeringBehavior::None;
 
-		WeightedBehavior(ISteeringBehavior* pBehavior, float weight) :
+		WeightedBehavior(ISteeringBehavior* pBehavior, SteeringBehavior behavior, float weight) :
 			pBehavior(pBehavior),
+			eBehavior(behavior),
 			weight(weight)
 		{};
 	};
-
-	// necessary to let Imgui sliders access weights
-	friend class Flock; 
-	friend class App_CombinedSteering;
-
 public:
-	BlendedSteering(vector<WeightedBehavior> weightedBehaviors);
+	BlendedSteering(std::vector<WeightedBehavior> weightedBehaviors);
 
 	void AddBehaviour(WeightedBehavior weightedBehavior) { m_WeightedBehaviors.push_back(weightedBehavior); }
 	SteeringOutput CalculateSteering(float deltaT, SteeringAgent* pAgent) override;
+	void SetWeightByEnum(SteeringBehavior eBehavior, float weight);
+	ISteeringBehavior* GetBehaviorFromEnum(SteeringBehavior eBehavior);
 
 private:
-	vector<WeightedBehavior> m_WeightedBehaviors = {};
+	friend class Flock;
+	friend class App_CombinedSteering;
+	std::vector<WeightedBehavior> m_WeightedBehaviors = {};
 };
 
 //*****************

@@ -35,6 +35,17 @@ protected:
 };
 #pragma endregion
 
+class Stand : public ISteeringBehavior
+{
+public:
+	Stand() = default;
+	virtual ~Stand() = default;
+
+	//Seek Behaviour
+	SteeringOutput CalculateSteering(float deltaT, SteeringAgent* pAgent) override;
+};
+
+
 ///////////////////////////////////////
 //SEEK
 //****
@@ -80,9 +91,9 @@ public:
 
 	//Wander Behavior
 	SteeringOutput CalculateSteering(float deltaT, SteeringAgent* pAgent) override;
-	void SetFleeRadius(float radius) { m_fleeRadius = radius; }
-private: 
-	float m_fleeRadius{15.f};
+	void SetFleeRadius(float radius) { m_FleeRadius = radius; }
+protected: 
+	float m_FleeRadius{15.f};
 };
 
 /////////////
@@ -139,9 +150,7 @@ public:
 
 	//Wander Behavior
 	SteeringOutput CalculateSteering(float deltaT, SteeringAgent* pAgent) override;
-	void SetEvadeRadius(float radius) { m_EvadeRadius = radius; }
 private: 
-	float m_EvadeRadius{ 15.f };
 };
 
 #endif
