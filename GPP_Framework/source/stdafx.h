@@ -120,7 +120,10 @@ extern bool gRequestShutdown;
 ===========================================================================*/
 /* --- DEFINES --- */
 #define USE_BOX2D
+#ifdef _DEBUG
 #define USE_VLD
+#endif // _DEBUG
+
 
 /* --- PLATFORMS --- */
 #define PLATFORM_WINDOWS 0

@@ -28,12 +28,11 @@ void App_KungFuCircle::Start()
 	m_pStageManager->SetPlayerKungFuGrid(m_KungFuGrid);
 	const int amountOfCreatures{16};
 	m_pEnemyCreatures.reserve(amountOfCreatures);
+	const float radius = m_KungFuGrid->GetWaitingCircleRadius() - 1;
 
 	for (int i = 0; i < amountOfCreatures; i++)
 	{
 		m_pEnemyCreatures.push_back(new Creature{});
-		m_pEnemyCreatures[i]->AddStageManager(m_pStageManager);
-		float radius = m_KungFuGrid->GetWaitingCircleRadius() -1;
 		const float angle = Elite::randomFloat(0, float(2 * M_PI));
 		m_pEnemyCreatures[i]->SetPosition({ cos(angle) * radius, sin(angle) * radius });
 	}

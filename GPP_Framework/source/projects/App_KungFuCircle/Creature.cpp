@@ -23,7 +23,7 @@ Creature::Creature()
 	SetStateMachine();
 	SetMass(0);
 	m_pArrive->SetSlowRadius(4);
-	m_pArrive->SetArrivalRadius(0.25f);
+	m_pArrive->SetArrivalRadius(0);
 	m_pFlee->SetFleeRadius(8);
 	SetSteeringBehavior(m_pBlendedSteering);
 	m_pEvade->SetFleeRadius(4);
@@ -51,7 +51,6 @@ Creature::~Creature()
 
 void Creature::Update(float dt)
 {
-
 	SteeringAgent::Update(dt);
 	m_pStateMachine->Update(dt);
 }

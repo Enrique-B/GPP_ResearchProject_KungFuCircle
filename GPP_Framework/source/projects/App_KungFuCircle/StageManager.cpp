@@ -28,6 +28,7 @@ void StageManager::Update(const std::vector<Creature*>& pCreatures, float dt)
 			if (it == m_pCreaturesInWaitingCircle.end())
 			{
 				m_pCreaturesInWaitingCircle.push_back(pCreature);
+				pCreature->AddStageManager(this);
 			}
 		}
 		else
